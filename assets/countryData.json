@@ -1,0 +1,97 @@
+[
+  {
+    "name": "Algeria",
+    "code": "213",
+    "initials": "dz"
+  },
+  {
+    "name": "Bahrain",
+    "code": "973",
+    "initials": "bh"
+  },
+  {
+    "name": "Egypt",
+    "code": "20",
+    "initials": "eg"
+  },
+  {
+    "name": "Iran",
+    "code": "98",
+    "initials": "ir"
+  },
+  {
+    "name": "Iraq",
+    "code": "964",
+    "initials": "iq"
+  },
+  {
+    "name": "Jordan",
+    "code": "962",
+    "initials": "jo"
+  },
+  {
+    "name": "Kuwait",
+    "code": "965",
+    "initials": "kw"
+  },
+  {
+    "name": "Lebanon",
+    "code": "961",
+    "initials": "lb"
+  },
+  {
+    "name": "Libya",
+    "code": "218",
+    "initials": "ly"
+  },
+  {
+    "name": "Morocco",
+    "code": "212",
+    "initials": "ma"
+  },
+  {
+    "name": "Oman",
+    "code": "968",
+    "initials": "om"
+  },
+  {
+    "name": "Palestine",
+    "code": "970",
+    "initials": "ps"
+  },
+  {
+    "name": "Qatar",
+    "code": "974",
+    "initials": "qa"
+  },
+  {
+    "name": "Saudi Arabia",
+    "code": "966",
+    "initials": "sa"
+  },
+  {
+    "name": "Syria",
+    "code": "963",
+    "initials": "sy"
+  },
+  {
+    "name": "Tunisia",
+    "code": "216",
+    "initials": "tn"
+  },
+  {
+    "name": "Turkey",
+    "code": "90",
+    "initials": "tr"
+  },
+  {
+    "name": "United Arab Emirates",
+    "code": "971",
+    "initials": "ae"
+  },
+  {
+    "name": "Yemen",
+    "code": "967",
+    "initials": "ye"
+  }
+]

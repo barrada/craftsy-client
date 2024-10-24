@@ -174,7 +174,6 @@
   "exclude": [
     "../dist",
     "../node_modules",
-    "../../node_modules",
     "../node_modules/nuxt/node_modules",
     "../node_modules/nuxt-svgo/runtime/server",
     "../node_modules/nuxt-svgo/dist/runtime/server",
