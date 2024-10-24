@@ -1,0 +1,16 @@
+{
+  "registration": {
+    "welcome": "Bienvenido",
+    "register": "Registro",
+    "name": "Nombre",
+    "email": "Correo electrónico",
+    "password": "Contraseña",
+    "phone": "Teléfono",
+    "first_name": "Nombre",
+    "last_name": "Apellido",
+    "country": "País",
+    "submit": "Enviar",
+    "registration_successful": "¡Usuario registrado con éxito!",
+    "registration_failed": "Fallo en el registro"
+  }
+}

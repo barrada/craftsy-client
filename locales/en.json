@@ -1,0 +1,16 @@
+{
+  "registration": {
+    "welcome": "Welcome",
+    "register": "Register",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "phone": "Phone",
+    "first_name": "First Name",
+    "last_name": "Last Name",
+    "country": "Country",
+    "submit": "Submit",
+    "registration_successful": "User registered successfully!",
+    "registration_failed": "Registration failed"
+  }
+}

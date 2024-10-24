@@ -1,0 +1,16 @@
+{
+  "registration": {
+    "welcome": "أهلا وسهلا",
+    "register": "تسجيل",
+    "name": "الاسم",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "phone": "الهاتف",
+    "first_name": "الاسم الأول",
+    "last_name": "اسم العائلة",
+    "country": "البلد",
+    "submit": "إرسال",
+    "registration_successful": "تم تسجيل المستخدم بنجاح!",
+    "registration_failed": "فشل التسجيل"
+  }
+}
