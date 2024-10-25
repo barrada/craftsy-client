@@ -45,6 +45,7 @@
   <div class="country-list-container" :class="{ hidden: !showCountryList }">
     <ul class="country-list">
       <li v-for="country in countries" :key="country.code" @click="selectCountry(country)">
+        <img :src="`/img/flags/${country.initials}.png`" class="countryflag w-6 h-4 mr-2" :alt="`${country.name} flag`" />
         <span class="country-name">{{ country.name }}</span> <!-- Show only country name -->
       </li>
     </ul>
@@ -205,7 +206,7 @@ function getCountryFlagPath(initials) {
 .country-list li:hover {
   background-color: #f5f5f5;
 }
-country-list {
+.country-list {
   list-style-type: none;
   padding: 0;
   margin: 0;
@@ -224,4 +225,5 @@ country-list {
   display: flex;
   align-items: center;
 }
+
 </style>
