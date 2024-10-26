@@ -1,7 +1,7 @@
 {
   "registration": {
     "welcome": "Welcome",
-    "register": "Register",
+    "register": "Create Account",
     "name": "Name",
     "email": "Email",
     "password": "Password",
