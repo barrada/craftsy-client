@@ -6,7 +6,7 @@ const [emblaRef] = emblaCarouselVue();
 </script>
 
 <template>
-  <div class="embla " ref="emblaRef">
+  <div class="embla" ref="emblaRef">
     <div class="embla__container">
       <div class="embla__slide"> <NuxtImg src="registration_slides/4.webp" class="rounded-2xl" /> </div>
       <div class="embla__slide"> <NuxtImg src="registration_slides/2.png" class="rounded-2xl" /> </div>

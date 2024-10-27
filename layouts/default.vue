@@ -1,8 +1,8 @@
 <template>
-  <div class="wrapper flex flex-col min-h-screen bg-red-500">
+  <div class="wrapper flex flex-col min-h-screen bg-gray-100">
     <HeaderAppHeader />
 
-    <main class="container mx-auto bg-red-400 p-4 flex-grow">
+    <main class="container mx-auto bg-gray-100 p-4 flex-grow">
       <slot />
     </main>
 
