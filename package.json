@@ -12,8 +12,10 @@
   "dependencies": {
     "@headlessui/vue": "^1.7.23",
     "@heroicons/vue": "^2.1.5",
+    "@nuxt/image": "^1.8.1",
     "@nuxtjs/i18n": "^8.5.5",
     "dotenv": "^16.4.5",
+    "embla-carousel-vue": "^8.3.0",
     "http-proxy-middleware": "^3.0.3",
     "nuxt": "^3.13.0",
     "nuxt-svgo": "^4.0.6",

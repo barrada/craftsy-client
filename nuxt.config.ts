@@ -33,7 +33,7 @@ export default defineNuxtConfig({
     },
   },
 
-  modules: ['nuxt-svgo','@nuxtjs/i18n'],
+  modules: ['nuxt-svgo', '@nuxtjs/i18n', '@nuxt/image'],
 
   i18n: {
     locales: [
@@ -56,6 +56,9 @@ export default defineNuxtConfig({
   svgo: {
     autoImportPath: './assets/',
   },
+  image: {
+    dir: 'assets/img/',
+  }
   
   
 })
