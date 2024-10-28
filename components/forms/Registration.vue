@@ -82,21 +82,36 @@
       </div>
 
       <!-- Password Input -->
-      <div class="mb-4">
+      <div class="mb-4 relative">
         <label
           class="block text-gray-700 text-sm font-bold mb-2"
           for="password"
           >{{ $t("registration.password") }}</label
         >
-        <input
-          v-model="password"
-          type="password"
-          id="password"
-          required
-          placeholder="At least 6 characters"
-          class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
-          @input="validatePassword"
-        />
+        <div class="flex items-center">
+          <input
+            v-model="password"
+            :type="showPassword ? 'text' : 'password'"
+            id="password"
+            required
+            placeholder="At least 6 characters"
+            class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline pr-10"
+            @input="validatePassword"
+          />
+          <div
+            class="absolute  right-0 pr-3 flex items-center"
+            @click="toggleShowPassword"
+          >
+            <EyeIcon
+              v-if="!showPassword"
+              class="h-5 w-5 text-gray-500 cursor-pointer"
+            />
+            <EyeSlashIcon
+              v-else
+              class="h-5 w-5 text-gray-500 cursor-pointer"
+            />
+          </div>
+        </div>
       </div>
       <!-- password errors -->
       <div
@@ -190,6 +205,7 @@
 import { onMounted, ref, computed } from "vue";
 import { useRuntimeConfig } from "#app";
 import countryData from "@/assets/countryData.json";
+import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
 
 const config = useRuntimeConfig();
 const apiUrl = `${config.public.apiBase}/users/register`;
@@ -198,6 +214,7 @@ const name = ref("");
 const password = ref("");
 const phone = ref("");
 const errorMessage = ref("");
+const showPassword = ref(false); // State for showing/hiding password
 
 const showNameError = ref(false);
 const showPhoneError = ref(false);
@@ -304,17 +321,13 @@ function toggleCountryList() {
 function getCountryFlagPath(initials) {
   return `/img/flags/${initials}.png`; // Use initials to construct the path
 }
+
+function toggleShowPassword() {
+  showPassword.value = !showPassword.value;
+}
 </script>
 
 <style scoped>
-/* .phone-input-container {
-    display: flex;
-    align-items: center;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 8px;
-  } */
-
 .country-code-container {
   display: flex;
   align-items: center;
