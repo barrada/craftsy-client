@@ -208,8 +208,10 @@ import { useRuntimeConfig } from "#app";
 import countryData from "@/assets/countryData.json";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
 
+
 const config = useRuntimeConfig();
 const apiUrl = `${config.public.apiBase}/users/register`;
+const checkPhoneUrl = `${config.public.apiBase}/users/check-phone`;
 
 const name = ref("");
 const password = ref("");
@@ -276,6 +278,19 @@ const register = async () => {
     const countryCodeWithoutPlus = selectedCountryCode.value.slice(1);
     const fullPhoneNumber = `00${countryCodeWithoutPlus}${phone.value}`;
 
+     // Check if the phone number already exists
+     const checkPhoneResponse = await $fetch(checkPhoneUrl, {
+      method: "POST",
+      body: {
+        phone: fullPhoneNumber,
+      },
+    });
+
+    if (checkPhoneResponse.exists) {
+      errorMessage.value = "Phone number already exists";
+      return;
+    }
+    // response
     const response = await $fetch(apiUrl, {
       method: "POST",
       body: {
