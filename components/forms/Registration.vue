@@ -265,14 +265,20 @@ const formValid = computed(() => {
   return nameValid.value && phoneValid.value && passwordValid.value;
 });
 
+// Submit Registration
 const register = async () => {
   try {
+    const selectedCountry = countries.value.find(
+      (country) => country.code === selectedCountryCode.value.slice(1)
+    );
+
     const response = await $fetch(apiUrl, {
       method: "POST",
       body: {
         name: name.value,
         password: password.value,
         phone: phone.value,
+        countryData: selectedCountry,
       },
     });
 
