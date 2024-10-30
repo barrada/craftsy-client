@@ -51,6 +51,7 @@
               v-model="phone"
               required
               @input="validatePhone"
+              @keypress="isNumber($event)"
             />
           </div>
         </div>
@@ -272,12 +273,15 @@ const register = async () => {
       (country) => country.code === selectedCountryCode.value.slice(1)
     );
 
+    const countryCodeWithoutPlus = selectedCountryCode.value.slice(1);
+    const fullPhoneNumber = `00${countryCodeWithoutPlus}${phone.value}`;
+
     const response = await $fetch(apiUrl, {
       method: "POST",
       body: {
         name: name.value,
         password: password.value,
-        phone: phone.value,
+        phone: fullPhoneNumber,
         countryData: selectedCountry,
       },
     });
@@ -330,6 +334,13 @@ function getCountryFlagPath(initials) {
 
 function toggleShowPassword() {
   showPassword.value = !showPassword.value;
+}
+function isNumber(event) {
+  const keyCode = event.keyCode;
+  const isValidNumber = (keyCode >= 48 && keyCode <= 57) || keyCode === 8;
+  if (!isValidNumber) {
+    event.preventDefault();
+  }
 }
 </script>
 
