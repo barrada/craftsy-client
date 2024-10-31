@@ -50,8 +50,9 @@
               placeholder="Mobile number"
               v-model="phone"
               required
-              @input="validatePhone"
+               @input="handlePhoneInput"
               @keypress="isNumber($event)"
+          
             />
           </div>
         </div>
@@ -265,8 +266,54 @@ const passwordErrorMessage = computed(() => {
 });
 
 const formValid = computed(() => {
-  return nameValid.value && phoneValid.value && passwordValid.value;
+  return nameValid.value && phoneValid.value && passwordValid.value && !showPhoneError.value;
 });
+     // Check if the phone number already exists
+     const checkPhoneAvailability = async () => {
+  try {
+    const selectedCountry = countries.value.find(
+      (country) => country.code === selectedCountryCode.value.slice(1)
+    );
+
+    const countryCodeWithoutPlus = selectedCountryCode.value.slice(1);
+    const fullPhoneNumber = `00${countryCodeWithoutPlus}${phone.value}`;
+
+    const checkPhoneResponse = await $fetch(checkPhoneUrl, {
+      method: "POST",
+      body: {
+        phone: fullPhoneNumber,
+      },
+    });
+
+    if (checkPhoneResponse.exists) {
+      phoneErrorMessage.value = "Phone number already exists";
+      showPhoneError.value = true;
+    } else {
+      phoneErrorMessage.value = "";
+      showPhoneError.value = false;
+    }
+  } catch (error) {
+    console.error("Error checking phone availability:", error);
+  }
+};
+
+//  prevent multiple API calls when the user is typing quickly.
+const debounce = (func, delay) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => {
+      func.apply(null, args);
+    }, delay);
+  };
+};
+const debouncedCheckPhoneAvailability = debounce(checkPhoneAvailability, 500);
+
+    // handle phone inputs
+    const handlePhoneInput = () => {
+  validatePhone();
+  debouncedCheckPhoneAvailability();
+};
 
 // Submit Registration
 const register = async () => {
@@ -278,18 +325,9 @@ const register = async () => {
     const countryCodeWithoutPlus = selectedCountryCode.value.slice(1);
     const fullPhoneNumber = `00${countryCodeWithoutPlus}${phone.value}`;
 
-     // Check if the phone number already exists
-     const checkPhoneResponse = await $fetch(checkPhoneUrl, {
-      method: "POST",
-      body: {
-        phone: fullPhoneNumber,
-      },
-    });
 
-    if (checkPhoneResponse.exists) {
-      errorMessage.value = "Phone number already exists";
-      return;
-    }
+
+
     // response
     const response = await $fetch(apiUrl, {
       method: "POST",
@@ -357,6 +395,8 @@ function isNumber(event) {
     event.preventDefault();
   }
 }
+// check phone availability
+
 </script>
 
 <style scoped>
