@@ -79,9 +79,9 @@
         </div>
       </div>
       <!-- phone errors -->
-      <div class="phone-errors text-red-500 text-sm mb-2" v-if="showPhoneError">
-        {{ phoneErrorMessage }}
-      </div>
+      <div class="phone-errors text-red-500 text-sm mb-2" v-if="isPhoneErrorVisible">
+  {{ phoneError }}
+</div>
 
       <!-- Password Input -->
       <div class="mb-4 relative">
@@ -224,6 +224,9 @@ const showNameError = ref(false);
 const showPhoneError = ref(false);
 const showPasswordError = ref(false);
 
+const phoneError = ref("");
+const isPhoneErrorVisible = ref(false);
+
 const nameValid = computed(() => {
   const names = name.value.trim().split(" ");
   return (
@@ -266,7 +269,7 @@ const passwordErrorMessage = computed(() => {
 });
 
 const formValid = computed(() => {
-  return nameValid.value && phoneValid.value && passwordValid.value && !showPhoneError.value;
+  return nameValid.value && phoneValid.value && passwordValid.value && !isPhoneErrorVisible.value;
 });
      // Check if the phone number already exists
      const checkPhoneAvailability = async () => {
@@ -286,14 +289,16 @@ const formValid = computed(() => {
     });
 
     if (checkPhoneResponse.exists) {
-      phoneErrorMessage.value = "Phone number already exists";
-      showPhoneError.value = true;
+      phoneError.value = "Phone number already exists";
+      isPhoneErrorVisible.value = true;
     } else {
-      phoneErrorMessage.value = "";
-      showPhoneError.value = false;
+      phoneError.value = "";
+      isPhoneErrorVisible.value = false;
     }
   } catch (error) {
     console.error("Error checking phone availability:", error);
+    phoneError.value = "Error checking phone availability";
+    isPhoneErrorVisible.value = true;
   }
 };
 
@@ -310,14 +315,16 @@ const debounce = (func, delay) => {
 const debouncedCheckPhoneAvailability = debounce(checkPhoneAvailability, 500);
 
     // handle phone inputs
-    const handlePhoneInput = () => {
-  validatePhone();
-  debouncedCheckPhoneAvailability();
+    const handlePhoneInput = async () => {
+  validatePhone(); // Validate phone number on input
+  await debouncedCheckPhoneAvailability(); // Check availability
 };
-
 // Submit Registration
 const register = async () => {
   try {
+        // Reset phone error before registration
+   
+
     const selectedCountry = countries.value.find(
       (country) => country.code === selectedCountryCode.value.slice(1)
     );
@@ -353,7 +360,15 @@ function validateName() {
 }
 
 function validatePhone() {
-  showPhoneError.value = !phoneValid.value;
+  const phoneNumber = phone.value.replace(/\D/g, ""); // Remove non-digit characters
+  if (phoneNumber.length < 6) {
+    phoneError.value = "Phone number must be at least 6 digits long";
+    isPhoneErrorVisible.value = true; // Show error
+  } else {
+    // Only clear the error if the phone number is *valid* and at least 6 digits
+    phoneError.value = ""; 
+    isPhoneErrorVisible.value = false; // Hide error
+  }
 }
 
 function validatePassword() {
