@@ -3,6 +3,7 @@ import type { DefineComponent, SlotsType } from 'vue'
 type IslandComponent<T extends DefineComponent> = T & DefineComponent<{}, {refresh: () => Promise<void>}, {}, {}, {}, {}, {}, {}, {}, {}, {}, {}, SlotsType<{ fallback: { error: unknown } }>>
 interface _GlobalComponents {
       'FooterAppFooter': typeof import("../components/footer/AppFooter.vue")['default']
+    'FormsOtpSmsVerification': typeof import("../components/forms/OtpSmsVerification.vue")['default']
     'FormsOtpSmsVerify': typeof import("../components/forms/OtpSmsVerify.vue")['default']
     'FormsRegistration': typeof import("../components/forms/Registration.vue")['default']
     'HeaderAppHeader': typeof import("../components/header/AppHeader.vue")['default']
@@ -41,6 +42,7 @@ interface _GlobalComponents {
     'NuxtIsland': typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
     'NuxtRouteAnnouncer': IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
       'LazyFooterAppFooter': typeof import("../components/footer/AppFooter.vue")['default']
+    'LazyFormsOtpSmsVerification': typeof import("../components/forms/OtpSmsVerification.vue")['default']
     'LazyFormsOtpSmsVerify': typeof import("../components/forms/OtpSmsVerify.vue")['default']
     'LazyFormsRegistration': typeof import("../components/forms/Registration.vue")['default']
     'LazyHeaderAppHeader': typeof import("../components/header/AppHeader.vue")['default']
@@ -85,6 +87,7 @@ declare module 'vue' {
 }
 
 export const FooterAppFooter: typeof import("../components/footer/AppFooter.vue")['default']
+export const FormsOtpSmsVerification: typeof import("../components/forms/OtpSmsVerification.vue")['default']
 export const FormsOtpSmsVerify: typeof import("../components/forms/OtpSmsVerify.vue")['default']
 export const FormsRegistration: typeof import("../components/forms/Registration.vue")['default']
 export const HeaderAppHeader: typeof import("../components/header/AppHeader.vue")['default']
@@ -123,6 +126,7 @@ export const Body: typeof import("../node_modules/nuxt/dist/head/runtime/compone
 export const NuxtIsland: typeof import("../node_modules/nuxt/dist/app/components/nuxt-island")['default']
 export const NuxtRouteAnnouncer: IslandComponent<typeof import("../node_modules/nuxt/dist/app/components/server-placeholder")['default']>
 export const LazyFooterAppFooter: typeof import("../components/footer/AppFooter.vue")['default']
+export const LazyFormsOtpSmsVerification: typeof import("../components/forms/OtpSmsVerification.vue")['default']
 export const LazyFormsOtpSmsVerify: typeof import("../components/forms/OtpSmsVerify.vue")['default']
 export const LazyFormsRegistration: typeof import("../components/forms/Registration.vue")['default']
 export const LazyHeaderAppHeader: typeof import("../components/header/AppHeader.vue")['default']

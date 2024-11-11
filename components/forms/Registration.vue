@@ -278,8 +278,8 @@ const formValid = computed(() => {
       (country) => country.code === selectedCountryCode.value.slice(1)
     );
 
-    const countryCodeWithoutPlus = selectedCountryCode.value.slice(1);
-    const fullPhoneNumber = `00${countryCodeWithoutPlus}${phone.value}`;
+    const countryCode = selectedCountryCode.value;
+    const fullPhoneNumber = `${countryCode}${phone.value}`;
 
     const checkPhoneResponse = await $fetch(checkPhoneUrl, {
       method: "POST",
@@ -329,8 +329,8 @@ const register = async () => {
       (country) => country.code === selectedCountryCode.value.slice(1)
     );
 
-    const countryCodeWithoutPlus = selectedCountryCode.value.slice(1);
-    const fullPhoneNumber = `00${countryCodeWithoutPlus}${phone.value}`;
+    const countryCode = selectedCountryCode.value;
+    const fullPhoneNumber = `${countryCode}${phone.value}`;
 
 
 
