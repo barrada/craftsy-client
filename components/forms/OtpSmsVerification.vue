@@ -30,88 +30,60 @@
 </template>
 
 <script setup>
+
 import { ref } from "vue";
-import { useRuntimeConfig } from "#app";
-
-const config = useRuntimeConfig();
-const apiUrl = `${config.public.apiBase}/users/register`;
-
-const otpCode = ref("");
-const showOTPError = ref(false);
-const otpErrorMessage = ref("");
 
 const props = defineProps({
-  userPhoneNumber: {
-    type: String,
-    required: true,
-  },
-  userName: {
-    type: String,
-    required: true,
-  },
-  userPassword: {
+  fullPhoneNumber: {
     type: String,
     required: true,
   },
   selectedCountry: {
     type: Object,
     required: true,
+    default: () => ({})
+  },
+  config: {
+    type: Object,
+    required: true,
   },
 });
 
+const otpCode = ref("");
+const showOTPError = ref(false);
+const otpErrorMessage = ref("");
+
+const emit = defineEmits(["otp-verified"]);
 
 const verifyOTP = async () => {
   try {
-    const response = await $fetch(`${apiUrl}/verify-otp`, {
-      method: "POST",
-      body: {
-        otp: otpCode.value,
-        phone: props.userPhoneNumber, // Assuming you have the user's phone number stored in a variable
-        name: props.userName, // Pass the user's name
-        password: props.userPassword, // Pass the user's password
-        countryData: props.selectedCountry, // Pass the selected country data
-      },
-    });
+    const payload = {
+      phone: props.fullPhoneNumber,
+      otp: otpCode.value,
+    };
+    console.log("Request payload:", payload);
 
-    if (response.success) {
-      // OTP verification successful, proceed with user registration
-      await registerUser();
-    } else {
-      showOTPError.value = true;
-      otpErrorMessage.value = response.message || "Invalid OTP code";
-    }
+    const response = await $fetch(`${props.config.public.apiBase}/communication/otp/sms/verify`, {
+      method: "POST",
+      body: payload,
+    });
+    console.log("Server response:", response);
+
+    if (response.message === 'OTP verified and deleted successfully') {
+  emit("otp-verified", otpCode.value);
+} else {
+  showOTPError.value = true;
+  otpErrorMessage.value = response.error || "Invalid OTP";
+}
   } catch (error) {
+  console.error("Error verifying OTP:", error);
+  if (error.response && error.response.data && error.response.data.error) {
     showOTPError.value = true;
-    otpErrorMessage.value = error.data || "OTP verification failed";
-    console.error("OTP verification error:", error);
+    otpErrorMessage.value = error.response.data.error;
+  } else {
+    showOTPError.value = true;
+    otpErrorMessage.value = "Failed to verify OTP";
   }
-};
-
-const registerUser = async () => {
-  try {
-    const selectedCountry = countries.value.find(
-      (country) => country.code === selectedCountryCode.value.slice(1)
-    );
-
-    const countryCodeWithoutPlus = selectedCountryCode.value.slice(1);
-    const fullPhoneNumber = `00${countryCodeWithoutPlus}${phone.value}`;
-
-    // Register the user with the provided data
-    const response = await $fetch(apiUrl, {
-      method: "POST",
-      body: {
-        name: name.value,
-        password: password.value,
-        phone: fullPhoneNumber,
-        countryData: selectedCountry,
-      },
-    });
-
-    console.log("User registered:", response);
-    // Redirect or perform any other necessary actions after successful registration
-  } catch (error) {
-    errorMessage.value = error.data || "Registration failed";
-    console.error("Registration error:", error);
-  }
+}
 };
 </script>

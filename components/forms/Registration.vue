@@ -1,7 +1,8 @@
 <template>
   <div class="flex items-center justify-center relative">
     <form
-      @submit.prevent="register"
+     v-if="!showOTPVerification"
+       @submit.prevent="sendOTPCode"
       class="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4 w-full max-w-sm"
     >
       <h1 class="text-xl font-bold mb-4">{{ $t("registration.register") }}</h1>
@@ -200,6 +201,14 @@
         >.
       </div>
     </form>
+    <!-- OTP SMS Verification -->
+     <FormsOtpSmsVerification 
+     v-else
+      :fullPhoneNumber="fullPhoneNumber"
+      :selectedCountry="selectedCountry"
+      :config="config"
+      @otp-verified="completeRegistration"
+     />
   </div>
 </template>
 
@@ -208,6 +217,9 @@ import { onMounted, ref, computed } from "vue";
 import { useRuntimeConfig } from "#app";
 import countryData from "@/assets/countryData.json";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
+import FormsOtpSmsVerification from '@/components/forms/OtpSmsVerification.vue'
+
+const showOTPVerification = ref(false)
 
 
 const config = useRuntimeConfig();
@@ -217,6 +229,10 @@ const checkPhoneUrl = `${config.public.apiBase}/users/check-phone`;
 const name = ref("");
 const password = ref("");
 const phone = ref("");
+
+const selectedCountry = ref(null); 
+const fullPhoneNumber = ref('')
+
 const errorMessage = ref("");
 const showPassword = ref(false); // State for showing/hiding password
 
@@ -325,9 +341,9 @@ const register = async () => {
         // Reset phone error before registration
    
 
-    const selectedCountry = countries.value.find(
-      (country) => country.code === selectedCountryCode.value.slice(1)
-    );
+    // const selectedCountry = countries.value.find(
+    //   (country) => country.code === selectedCountryCode.value.slice(1)
+    // );
 
     const countryCode = selectedCountryCode.value;
     const fullPhoneNumber = `${countryCode}${phone.value}`;
@@ -387,9 +403,17 @@ onMounted(() => {
 });
 
 function selectCountry(country) {
-  selectedCountryCode.value = `+${country.code}`; // Set the code with a plus sign
-  selectedCountryFlag.value = getCountryFlagPath(country.initials); // Set the flag using initials
-  showCountryList.value = false; // Hide the dropdown
+  // Find the selected country object from the countryData.json
+  const selectedCountryObj = countries.value.find(c => c.code === country.code);
+
+  if (selectedCountryObj) {
+    selectedCountryCode.value = `+${selectedCountryObj.code}`; // Set the code with a plus sign
+    selectedCountryFlag.value = getCountryFlagPath(selectedCountryObj.initials); // Set the flag using initials
+    selectedCountry.value = { name: selectedCountryObj.name, code: selectedCountryObj.code }; // Set the selectedCountry object
+    showCountryList.value = false; // Hide the dropdown
+  } else {
+    console.error('Invalid country data:', country);
+  }
 }
 
 function toggleCountryList() {
@@ -411,6 +435,69 @@ function isNumber(event) {
   }
 }
 // check phone availability
+
+// NEW CODE ADDED
+
+// Send OTP code to the server
+const sendOTPCode = async (event) => {
+  try {
+    // Construct the full phone number
+    const selectedCountry = countries.value.find(
+      (country) => country.code === selectedCountryCode.value.slice(1)
+    );
+    const countryCode = selectedCountryCode.value;
+    fullPhoneNumber.value = `${countryCode}${phone.value}`;
+
+    // Prepare the request payload
+    const payload = {
+      phone: fullPhoneNumber.value,
+      // Any other required data
+    };
+
+    // Send the OTP request to the server
+    const response = await $fetch(`${config.public.apiBase}/communication/otp/sms/send`, {
+      method: "POST",
+      body: payload,
+    });
+
+    // Handle the response if needed
+
+    // Show the OTP verification component
+    showOTPVerification.value = true;
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+  }
+};
+
+// Complete the registration after OTP verification
+
+const completeRegistration = async () => {
+  try {
+        // Find the Egypt country object from the countryData
+        const egyptCountry = countries.value.find(country => country.name === 'Egypt');
+    // Prepare the request payload with the OTP code
+    const payload = {
+      name: name.value,
+      password: password.value,
+      phone: fullPhoneNumber.value,
+      countryData: selectedCountry.value || egyptCountry // Use the selectedCountry object directly
+  
+    };
+
+    // Send the registration request to the server
+    console.log('Registration payload:', payload);
+    const response = await $fetch(`${config.public.apiBase}/users/register`, {
+      method: "POST",
+      body: payload,
+    });
+
+    // Handle the response if needed
+    console.log("User registered:", response);
+  } catch (error) {
+    errorMessage.value = error.data || "Registration failed";
+    console.error("Registration error:", error);
+  }
+};
 
 </script>
 
