@@ -208,6 +208,7 @@
       :selectedCountry="selectedCountry"
       :config="config"
       @otp-verified="completeRegistration"
+       @wrong-number="showRegistrationForm"
      />
   </div>
 </template>
@@ -497,6 +498,9 @@ const completeRegistration = async () => {
     errorMessage.value = error.data || "Registration failed";
     console.error("Registration error:", error);
   }
+};
+const showRegistrationForm = () => {
+  showOTPVerification.value = false;
 };
 
 </script>
