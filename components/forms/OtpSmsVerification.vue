@@ -157,10 +157,10 @@ const resendOTPCode = async () => {
   try {
     const payload = {
       phone: props.fullPhoneNumber,
-      otp: otpCode.value, // Include the current OTP code
+   
       // Any other required data
     };
-
+    console.log('Deleting OTP with payload:', payload);
     // Delete the old OTP code from the database
     await $fetch(`${props.config.public.apiBase}/communication/otp/sms/delete`, {
       method: "DELETE",
