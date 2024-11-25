@@ -132,8 +132,12 @@
           'bg-slate-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full',
           formValid ? 'hover:bg-blue-700' : 'opacity-50 cursor-not-allowed',
         ]"
+        @click.prevent="handleSubmit"
       >
-        {{ $t("registration.submit") }}
+      
+      <span v-if="!isSubmitting">{{ $t("registration.submit") }}</span>
+      <IndicatorsProcessing v-else />
+
       </button>
       <!-- form errors -->
       <div class="form-errors">
@@ -438,6 +442,20 @@ function isNumber(event) {
 // check phone availability
 
 // NEW CODE ADDED
+
+// show spinner
+const isSubmitting = ref(false);
+
+const handleSubmit = async () => {
+  isSubmitting.value = true;
+  try {
+    await sendOTPCode();
+  } catch (error) {
+    console.error("Error sending OTP:", error);
+  } finally {
+    isSubmitting.value = false;
+  }
+};
 
 // Send OTP code to the server
 const sendOTPCode = async (event) => {

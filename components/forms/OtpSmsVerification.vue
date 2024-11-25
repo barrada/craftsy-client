@@ -27,7 +27,8 @@
         class="bg-slate-800 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline w-full hover:bg-blue-700"
         :class="{ 'opacity-50 cursor-not-allowed': isLocked }"
       >
-        Verify OTP
+      <span v-if="!isVerifying">Verify OTP</span>
+      <IndicatorsProcessing v-else />
       </button>
       <div class="mt-4">
         <span class="text-sm">Didn't receive the code?</span>
@@ -85,6 +86,7 @@ const resendTimer = ref(null);
 const resendCountdown = ref(60);
 const resendAttempts = ref(0);
 const maxResendAttempts = 3;
+const isVerifying = ref(false);
 
 const emit = defineEmits(["otp-verified", "wrong-number"]);
 
@@ -93,6 +95,7 @@ const wrongNumber = () => {
 };
 
 const verifyOTP = async () => {
+  isVerifying.value = true;
   try {
     const payload = {
       phone: props.fullPhoneNumber,
@@ -131,6 +134,8 @@ const verifyOTP = async () => {
     }
     failedAttempts.value++; // Increment failed attempts
     handleFailedAttempts();
+  }finally {
+    isVerifying.value = false; // Set isVerifying to false after verifying OTP
   }
 };
 
