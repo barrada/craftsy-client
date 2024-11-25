@@ -220,6 +220,10 @@
 <script setup>
 import { onMounted, ref, computed } from "vue";
 import { useRuntimeConfig } from "#app";
+
+import { useI18n } from 'vue-i18n';
+const { t } = useI18n();
+
 import countryData from "@/assets/countryData.json";
 import { EyeIcon, EyeSlashIcon } from "@heroicons/vue/24/outline";
 import FormsOtpSmsVerification from '@/components/forms/OtpSmsVerification.vue'
@@ -251,7 +255,7 @@ const isPhoneErrorVisible = ref(false);
 const nameValid = computed(() => {
   const names = name.value.trim().split(" ");
   return (
-    names.length === 2 &&
+    names.length >= 2 &&
     names.every((name) => name.length >= 2 && !/\d/.test(name))
   );
 });
@@ -259,11 +263,11 @@ const nameValid = computed(() => {
 const nameErrorMessage = computed(() => {
   const names = name.value.trim().split(" ");
   if (names.length === 1) {
-    return "Please enter both first and last name";
+    return t('registration.errors.empty_name')  
   } else if (names.some((name) => name.length < 2)) {
-    return "Each name must be at least 2 characters";
+    return t('registration.errors.2char_name') ;
   } else if (names.some((name) => /\d/.test(name))) {
-    return "Names cannot contain numbers";
+    return t('registration.errors.nonum_name') ;
   }
   return "";
 });

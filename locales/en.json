@@ -11,6 +11,11 @@
     "country": "Country",
     "submit": "Submit",
     "registration_successful": "User registered successfully!",
-    "registration_failed": "Registration failed"
+    "registration_failed": "Registration failed",
+    "errors":{
+      "empty_name":"Please enter both first and last name json",
+      "2char_name":"Each name must be at least 2 characters json",
+      "nonum_name":"Names cannot contain numbers json"
+    }
   }
 }

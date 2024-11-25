@@ -51,6 +51,8 @@ export default defineNuxtConfig({
       useCookie: true,
       cookieCrossDomain: true,
     },
+    
+    
 
   },
   svgo: {
